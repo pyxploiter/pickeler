@@ -1,9 +1,54 @@
 body {
-    font-family: monospace;
-    padding: 12px;
+  font-family: monospace;
+  padding: 10px;
 }
 
-pre {
-    white-space: pre-wrap;
-    word-break: break-word;
+pre.json {
+  white-space: pre;
+  line-height: 1.4;
+}
+
+/* Structure */
+.brace {
+  color: #ffd700;
+}
+
+.bracket {
+  color: #da70d6;
+}
+
+.colon {
+  color: #d4d4d4;
+}
+
+/* Keys & values */
+.key {
+  color: #9cdcfe;
+}
+
+.string {
+  color: #ce9178;
+}
+
+.number {
+  color: #b5cea8;
+}
+
+.boolean {
+  color: #569cd6;
+}
+
+.null {
+  color: #569cd6;
+  font-style: italic;
+}
+
+/* Fallback */
+.unknown {
+  color: #d7ba7d;
+}
+
+/* Toolbar */
+.toolbar {
+  margin-bottom: 10px;
 }

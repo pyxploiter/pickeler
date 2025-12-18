@@ -4,79 +4,92 @@ import pickletools
 import json
 import os
 import io
+from typing import Any
 
-parser = argparse.ArgumentParser()
-parser.add_argument("path")
-parser.add_argument("--mode", choices=["safe", "full"], default="safe")
-args = parser.parse_args()
+# =========================
+# Limits
+# =========================
+MAX_DEPTH = 5
+MAX_ITEMS = 100
+ARRAY_PREVIEW = 20
+DF_PREVIEW_ROWS = 10
 
-path = args.path
 
-def safe_view():
-    print(f"File: {os.path.basename(path)}")
-    print(f"Size: {os.path.getsize(path)} bytes\n")
-    print("\n--- pickletools.dis ---\n")
+# =========================
+# SAFE VIEW
+# =========================
+def safe_view(path):
     out = io.StringIO()
     with open(path, "rb") as f:
         pickletools.dis(f.read(), out=out)
-    print(out.getvalue())
-    print("\n-----------------------\n")
 
-def summarize(obj, depth=0, max_depth=5, max_items=100):
-    if depth > max_depth:
-        return "<max depth reached>"
+    return out.getvalue()
+
+
+# =========================
+# RAW SERIALIZER
+# =========================
+def serialize(obj: Any, depth=0):
+    if depth >= MAX_DEPTH:
+        return "<truncated>"
 
     if obj is None or isinstance(obj, (int, float, bool, str)):
         return obj
 
     if isinstance(obj, (list, tuple)):
-        return [summarize(x, depth+1) for x in obj[:max_items]]
+        return [
+            serialize(x, depth + 1)
+            for x in obj[:MAX_ITEMS]
+        ]
 
     if isinstance(obj, dict):
         return {
-            str(k): summarize(v, depth+1)
-            for k, v in list(obj.items())[:max_items]
+            str(k): serialize(v, depth + 1)
+            for k, v in list(obj.items())[:MAX_ITEMS]
         }
 
-    # numpy
+    # numpy (optional)
     try:
         import numpy as np
         if isinstance(obj, np.ndarray):
-            return {
-                "__type__": "ndarray",
-                "shape": obj.shape,
-                "dtype": str(obj.dtype),
-                "preview": obj.flatten()[:20].tolist()
-            }
+            return obj.flatten()[:ARRAY_PREVIEW].tolist()
     except Exception:
         pass
 
-    # pandas
+    # pandas (optional)
     try:
         import pandas as pd
         if isinstance(obj, pd.DataFrame):
-            return {
-                "__type__": "DataFrame",
-                "shape": obj.shape,
-                "columns": obj.columns.tolist(),
-                "head": obj.head(10).to_dict()
-            }
+            return obj.head(DF_PREVIEW_ROWS).to_dict()
     except Exception:
         pass
 
-    return {
-        "__type__": type(obj).__name__,
-        "__repr__": repr(obj)[:200]
-    }
+    # fallback: string representation
+    return repr(obj)
 
-def full_view():
+
+# =========================
+# FULL VIEW
+# =========================
+def full_view(path):
     with open(path, "rb") as f:
         obj = pickle.load(f)
 
-    result = summarize(obj)
-    print(json.dumps(result, indent=2))
+    return serialize(obj)
 
-if args.mode == "safe":
-    safe_view()
-else:
-    full_view()
+
+# =========================
+# Entry
+# =========================
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path")
+    parser.add_argument("--mode", choices=["safe", "full"], default="safe")
+    args = parser.parse_args()
+
+    if args.mode == "safe":
+        result = safe_view(args.path)
+        print(result)
+    else:
+        result = full_view(args.path)
+        print(json.dumps(result, indent=2))
