@@ -1,0 +1,57 @@
+{
+    "name": "pickler",
+    "displayName": "Pickler",
+    "description": "View Python pickle (.pkl) files safely",
+    "version": "0.0.1",
+    "publisher": "pyxploiter",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "customEditors": [
+            {
+                "viewType": "pickler.viewer",
+                "displayName": "Pickler: Pickle Viewer",
+                "selector": [
+                    {
+                        "filenamePattern": "*.pkl"
+                    }
+                ],
+                "priority": "default",
+                "supportsMultipleEditorsPerDocument": false
+            }
+        ],
+        "commands": [
+            {
+            "command": "pickler.showInstallHelp",
+            "title": "Pickler: Show dependency install instructions"
+            }
+        ],
+        "configuration": {
+            "title": "Pickler",
+            "properties": {
+                "pickler.pythonPath": {
+                    "type": "string",
+                    "default": "python",
+                    "description": "Path to python executable"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "@types/vscode": "^1.85.0",
+        "typescript": "^5.3.0"
+    }
+}

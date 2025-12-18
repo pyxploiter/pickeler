@@ -1,0 +1,9 @@
+body {
+    font-family: monospace;
+    padding: 12px;
+}
+
+pre {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
