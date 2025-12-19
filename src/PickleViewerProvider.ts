@@ -126,9 +126,15 @@ export class PickleViewerProvider
             <link rel="stylesheet" href="${cssUri}">
         </head>
         <body>
-            <div class="toolbar">
-                <button id="full">Load Full Content (Unsafe)</button>
+            <div class="header">
+                <h1 id="header"></h1>
+                <p id="subtitle"></p>
             </div>
+            <div class="toolbar">
+                <button id="full" class="danger">Load Full Content (Unsafe)</button>
+            </div>
+
+            <hr id="divider" />
 
             <pre id="output">Loading…</pre>
 

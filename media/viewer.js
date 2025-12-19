@@ -2,10 +2,29 @@ const vscode = acquireVsCodeApi();
 
 const output = document.getElementById("output");
 const button = document.getElementById("full");
+const header = document.getElementById("header");
+const subtitle = document.getElementById("subtitle");
 
 button.onclick = () => {
   vscode.postMessage({ type: "requestFull" });
 };
+
+// -------------------------
+// UI state helpers
+// -------------------------
+function setSafeModeUI() {
+  header.textContent = "Pickler — Safe View";
+  subtitle.textContent =
+    "Shows pickle structure using pickletools. No code execution.";
+  button.style.display = "inline-block";
+}
+
+function setFullModeUI() {
+  header.textContent = "Pickler — Full View (Unsafe)";
+  subtitle.textContent =
+    "Shows full unpickled content. Only enabled after explicit user consent.";
+  button.style.display = "none";
+}
 
 // -------------------------
 // HTML escaping
@@ -79,10 +98,17 @@ function render(value, indent = 0) {
 }
 
 // -------------------------
-// Message handler
+// Message handler (FIXED)
 // -------------------------
 window.addEventListener("message", event => {
   if (event.data.type !== "result") return;
+
+  // 🔑 THIS is the missing link
+  if (event.data.mode === "full") {
+    setFullModeUI();
+  } else {
+    setSafeModeUI();
+  }
 
   let parsed;
   try {
@@ -94,3 +120,6 @@ window.addEventListener("message", event => {
 
   output.innerHTML = `<pre class="json">${render(parsed)}</pre>`;
 });
+
+// Initial state
+setSafeModeUI();

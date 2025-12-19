@@ -2,7 +2,7 @@
     "name": "pickler",
     "displayName": "Pickler",
     "description": "View Python pickle (.pkl) files safely",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "publisher": "pyxploiter",
     "icon": "assets/icon.png",
     "engines": {

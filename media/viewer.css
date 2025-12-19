@@ -52,3 +52,36 @@ pre.json {
 .toolbar {
   margin-bottom: 10px;
 }
+
+.header h1 {
+  margin: 0;
+  font-size: 1.6em;
+}
+
+.header p {
+  margin: 4px 0 12px 0;
+  color: #bbbbbb;
+}
+
+.toolbar {
+  margin-bottom: 10px;
+}
+
+button.danger {
+  background-color: #c74e39;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button.danger:hover {
+  background-color: #e05a47;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 12px 0;
+}
