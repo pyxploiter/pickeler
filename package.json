@@ -4,6 +4,7 @@
     "description": "View Python pickle (.pkl) files safely",
     "version": "0.1.0",
     "publisher": "pyxploiter",
+    "icon": "assets/icon.png",
     "engines": {
         "vscode": "^1.85.0"
     },
