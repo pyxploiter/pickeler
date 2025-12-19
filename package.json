@@ -2,7 +2,7 @@
     "name": "pickler",
     "displayName": "Pickler",
     "description": "View Python pickle (.pkl) files safely",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "publisher": "pyxploiter",
     "engines": {
         "vscode": "^1.85.0"
@@ -41,7 +41,11 @@
                     "type": "string",
                     "default": "python",
                     "description": "Path to python executable"
-                }
+                },
+                "pickler.maxDepth": { "type": "number", "default": 5, "minimum": 1 },
+                "pickler.maxItems": { "type": "number", "default": 100, "minimum": 1 },
+                "pickler.arrayPreview": { "type": "number", "default": 20 },
+                "pickler.dfPreviewRows": { "type": "number", "default": 10 }
             }
         }
     },
@@ -53,5 +57,16 @@
         "@types/node": "^20.0.0",
         "@types/vscode": "^1.85.0",
         "typescript": "^5.3.0"
-    }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/pyxploiter/pickeler"
+    },
+    "keywords": [
+        "pickle",
+        "python",
+        "pkl",
+        "data",
+        "viewer"
+    ]
 }

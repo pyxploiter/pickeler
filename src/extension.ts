@@ -11,7 +11,20 @@ export function activate(context: vscode.ExtensionContext) {
         )
     );
 
-    vscode.window.showInformationMessage(
-        "Optional features require numpy and pandas.\n\nRun:\npip install numpy pandas"
+    context.subscriptions.push(
+        vscode.commands.registerCommand(
+            "pickler.showInstallHelp",
+            () => {
+                vscode.window.showInformationMessage(
+                    "Optional features require numpy and pandas",
+                    "Copy pip command"
+                    ).then(choice => {
+                    if (choice === "Copy pip command") {
+                        vscode.env.clipboard.writeText("pip install numpy pandas");
+                    }
+                });
+
+            }
+        )
     );
 }
